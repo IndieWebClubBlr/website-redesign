@@ -42,6 +42,56 @@ for noisy_logger in ("MARKDOWN", "urllib3", "requests"):
 # word rather than a substring keeps ``noindex`` from matching a longer token.
 _NOINDEX_PATTERN = re.compile(r"\b(?:noindex|none)\b", re.IGNORECASE)
 
+# Pages grouped under each top-level navigation item. The first match wins.
+_NAV_SECTIONS = {
+    "events": ("events/", "topics/", "prompts/"),
+    "writings": ("writings/", "archive/", "search/"),
+    "members": ("members/", "webring/"),
+    "about": ("about/", "coc/"),
+}
+
+
+def nav_section(page_url: str) -> str:
+    """Return the top-level navigation section for a page URL.
+
+    Args:
+        page_url: Relative page URL, with or without a leading slash.
+
+    Returns:
+        One of ``events``, ``writings``, ``members``, ``about``, ``home``,
+        or ``other``.
+    """
+    path = page_url.strip("/")
+    if not path:
+        return "home"
+    for section, prefixes in _NAV_SECTIONS.items():
+        if any(
+            path == prefix.rstrip("/") or path.startswith(prefix)
+            for prefix in prefixes
+        ):
+            return section
+    return "other"
+
+
+def asset_destination(asset: str) -> Path:
+    """Return the output-relative path for a repository asset.
+
+    Files under ``assets/`` keep their directory structure, so fonts land
+    in ``_site/fonts/``. Files outside ``assets/`` (such as ``CNAME``) keep
+    their basename at the output root.
+
+    Args:
+        asset: Repository-relative asset path.
+
+    Returns:
+        Output-relative path.
+    """
+    path = Path(asset)
+    try:
+        return path.relative_to("assets")
+    except ValueError:
+        return Path(path.name)
+
 
 def has_noindex_directive(value: str | None) -> bool:
     """Whether a robots directive asks crawlers not to index the page.
@@ -187,6 +237,7 @@ def render_and_save_html(html_content: str, page_url: str, output_dir: Path):
     """
     try:
         now = datetime.now(timezone.utc)
+        section = nav_section(page_url)
         template_data = {
             "site_url": config.SITE_URL,
             "page_url": f"{config.SITE_URL}{page_url}",
@@ -194,6 +245,10 @@ def render_and_save_html(html_content: str, page_url: str, output_dir: Path):
                 "%d %b %Y, %I:%M %p IST"
             ),
             "content": html_content,
+            "nav_events": section == "events",
+            "nav_writings": section == "writings",
+            "nav_members": section == "members",
+            "nav_about": section == "about",
         }
         default_template = read_template("default.html")
         renderer = make_renderer()

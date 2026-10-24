@@ -70,6 +70,7 @@ from src.newsletter import generate_newsletter_page
 from src.search import generate_search_page
 from src.utils import (
     add_ref_param,
+    asset_destination,
     make_renderer,
     markdown_to_html,
     read_template,
@@ -94,6 +95,14 @@ ASSETS = [
     "assets/search.js",
     "assets/stemmer.js",
     "assets/.nojekyll",
+    "assets/fonts/anton-regular.woff2",
+    "assets/fonts/gelasio-regular.woff2",
+    "assets/fonts/gelasio-bold.woff2",
+    "assets/fonts/courier-prime-regular.woff2",
+    "assets/fonts/courier-prime-bold.woff2",
+    "assets/fonts/OFL-Anton.txt",
+    "assets/fonts/OFL-Gelasio.txt",
+    "assets/fonts/OFL-Courier-Prime.txt",
     "CNAME",
 ]
 
@@ -332,7 +341,8 @@ def generate_website(
         """Copy one static asset into the output directory."""
         src = Path(asset)
         if src.exists():
-            dst = output_dir / src.name
+            dst = output_dir / asset_destination(asset)
+            dst.parent.mkdir(parents=True, exist_ok=True)
             _ = shutil.copyfile(src, dst)
             logger.info(f"Copied asset: {src} -> {dst}")
         else:

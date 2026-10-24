@@ -36,18 +36,44 @@
 </head>
 
 <body>
-  <header>
-    <h1 class="logo"><a href="/">IndieWebClub<br>Bangalore</a></h1>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/" aria-label="IndieWebClub Bangalore — home">
+        <span>IndieWebClub</span>
+        <span>Bangalore</span>
+      </a>
+
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="/events/" {{#nav_events}}aria-current="page"{{/nav_events}}>Events</a></li>
+          <li><a href="/writings/" {{#nav_writings}}aria-current="page"{{/nav_writings}}>Writings</a></li>
+          <li><a href="/members/" {{#nav_members}}aria-current="page"{{/nav_members}}>Members</a></li>
+          <li><a href="/about/" {{#nav_about}}aria-current="page"{{/nav_about}}>About</a></li>
+        </ul>
+        <a class="button button--join" href="/whatsapp">Join us</a>
+      </nav>
+    </div>
   </header>
 
-  <main>
+  <main id="main">
     {{{content}}}
   </main>
 
-  <footer>
-    <div><a href="https://indieweb.org/"><img src="{{{site_url}}}indiewebcamp-button.svg" style="image-rendering:pixelated;"></a></div>
-    <div>Last generated at: <time datetime="{{generated_date}}">{{generated_date}}</time></div>
-    <div><a href="https://github.com/IndieWebClubBlr/website/">Source</a></div>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <a class="footer-badge" href="https://indieweb.org/">
+        <img src="{{{site_url}}}indiewebcamp-button.svg" alt="IndieWeb" style="image-rendering:pixelated;">
+      </a>
+      <p>Last generated <time datetime="{{generated_date}}">{{generated_date}}</time></p>
+      <ul class="footer-links">
+        <li><a href="/coc/">Code of Conduct</a></li>
+        <li><a href="/newsletter/">Newsletter</a></li>
+        <li><a href="/blogroll.atom">RSS</a></li>
+        <li><a href="https://github.com/IndieWebClubBlr/website/">Source</a></li>
+      </ul>
+    </div>
   </footer>
 </body>
 
