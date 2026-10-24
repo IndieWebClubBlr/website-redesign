@@ -1,12 +1,13 @@
 <section id="archive">
-  <h2>{{year}} Archive</h2>
-  <p>{{total_posts}} posts · {{member_count}} members</p>
-  <ul class="no-marker pointed-hand">
-    <li><a href="/archive/">Archive</a></li>
-  </ul>
+  <header class="page-intro">
+    <p class="eyebrow"><a href="/archive/">Archive</a></p>
+    <h1>{{year}}</h1>
+    <p class="lede">{{total_posts}} posts · {{member_count}} members</p>
+  </header>
 
   <noscript class="noscript"><p>Enable JavaScript to search posts.</p></noscript>
   <div class="archive-search-box">
+    <label for="archive-search">Search posts</label>
     <input id="archive-search" type="search" placeholder="Search posts by title, author, tag, or keyword">
     <p id="archive-result-count"></p>
   </div>

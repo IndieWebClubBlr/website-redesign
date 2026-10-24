@@ -1,27 +1,28 @@
 <section id="archive">
-  <h2>Archive</h2>
-  <p>{{total_posts}} posts · {{member_count}} members · {{date_range}}</p>
+  <header class="page-intro">
+    <p class="eyebrow">All posts</p>
+    <h1>Archive</h1>
+    <p class="lede">{{total_posts}} posts · {{member_count}} members · {{date_range}}</p>
+  </header>
   {{#has_chart}}
   <figure class="archive-chart-figure">
     {{{chart_svg}}}
     <figcaption>Posts per month</figcaption>
   </figure>
   {{/has_chart}}
-  <ul class="no-marker pointed-hand">
-    <li><a href="/blogroll.atom">Subscribe as a feed.</a></li>
-    <li><a href="/newsletter/">Subscribe as a newsletter.</a></li>
-    <li><a href="/blogroll.opml">Download as an OPML file.</a></li>
-    {{#has_search}}<li><a href="/search/">Search all posts.</a></li>{{/has_search}}
-    <li><a href="/members/">See the Member Directory</a>.</li>
+  <ul class="link-list">
+    <li><a href="/blogroll.atom">Subscribe as a feed</a></li>
+    <li><a href="/newsletter/">Subscribe as a newsletter</a></li>
+    <li><a href="/blogroll.opml">Download as an OPML file</a></li>
+    {{#has_search}}<li><a href="/search/">Search all posts</a></li>{{/has_search}}
+    <li><a href="/members/">See the member directory</a></li>
   </ul>
-  {{#years}}
-  <div class="entry">
-    <h3>
+  <ol class="year-list">
+    {{#years}}
+    <li>
       <a href="/archive/{{year}}/">{{year}}</a>
-      <span style="font-size: smaller; font-weight: normal">
-        {{count}} posts
-      </span>
-    </h3>
-  </div>
-  {{/years}}
+      <span>{{count}} posts</span>
+    </li>
+    {{/years}}
+  </ol>
 </section>
