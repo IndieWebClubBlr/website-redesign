@@ -30,6 +30,9 @@ MAX_SHOWN_POSTS_PER_FEED = 1
 # Maximum number of recent entries to show overall.
 MAX_SHOWN_POSTS = 20
 
+# Maximum number of recent posts on the homepage.
+MAX_SHOWN_HOMEPAGE_POSTS = 6
+
 # Maximum number of tags to show for each entry.
 MAX_SHOWN_TAGS = 5
 

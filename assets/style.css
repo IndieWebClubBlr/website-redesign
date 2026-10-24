@@ -5,7 +5,8 @@
 
 @font-face {
   font-family: "Anton";
-  src: url("/fonts/anton-regular.woff2") format("woff2");
+  src: url("/fonts/Anton-Regular.woff2") format("woff2"),
+       url("/fonts/Anton-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -13,7 +14,8 @@
 
 @font-face {
   font-family: "Gelasio";
-  src: url("/fonts/gelasio-regular.woff2") format("woff2");
+  src: url("/fonts/Gelasio-Regular.woff2") format("woff2"),
+       url("/fonts/Gelasio-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -21,15 +23,35 @@
 
 @font-face {
   font-family: "Gelasio";
-  src: url("/fonts/gelasio-bold.woff2") format("woff2");
+  src: url("/fonts/Gelasio-Italic.woff2") format("woff2"),
+       url("/fonts/Gelasio-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gelasio";
+  src: url("/fonts/Gelasio-Bold.woff2") format("woff2"),
+       url("/fonts/Gelasio-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
+  font-family: "Gelasio";
+  src: url("/fonts/Gelasio-BoldItalic.woff2") format("woff2"),
+       url("/fonts/Gelasio-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
   font-family: "Courier Prime";
-  src: url("/fonts/courier-prime-regular.woff2") format("woff2");
+  src: url("/fonts/CourierPrime-Regular.woff2") format("woff2"),
+       url("/fonts/CourierPrime-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -37,9 +59,28 @@
 
 @font-face {
   font-family: "Courier Prime";
-  src: url("/fonts/courier-prime-bold.woff2") format("woff2");
+  src: url("/fonts/CourierPrime-Italic.woff2") format("woff2"),
+       url("/fonts/CourierPrime-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Courier Prime";
+  src: url("/fonts/CourierPrime-Bold.woff2") format("woff2"),
+       url("/fonts/CourierPrime-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Courier Prime";
+  src: url("/fonts/CourierPrime-BoldItalic.woff2") format("woff2"),
+       url("/fonts/CourierPrime-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 

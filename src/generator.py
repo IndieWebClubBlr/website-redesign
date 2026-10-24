@@ -45,6 +45,7 @@ from src.data_pages import (
     load_data_page,
     render_data_page,
 )
+from src.entry_sections import build_entry_sections
 from src.events import (
     Event,
     fetch_events,
@@ -57,10 +58,8 @@ from src.feeds import (
     FailureReason,
     FeedEntry,
     FeedInfo,
-    entry_ctx,
     fetch_all_feeds,
     generate_blogroll_feed,
-    group_feed_entries,
     parse_opml_file,
     prepend_fediverse_creator,
     separate_weeknote_entries,
@@ -95,11 +94,24 @@ ASSETS = [
     "assets/search.js",
     "assets/stemmer.js",
     "assets/.nojekyll",
-    "assets/fonts/anton-regular.woff2",
-    "assets/fonts/gelasio-regular.woff2",
-    "assets/fonts/gelasio-bold.woff2",
-    "assets/fonts/courier-prime-regular.woff2",
-    "assets/fonts/courier-prime-bold.woff2",
+    "assets/fonts/Anton-Regular.woff2",
+    "assets/fonts/Anton-Regular.ttf",
+    "assets/fonts/Gelasio-Regular.woff2",
+    "assets/fonts/Gelasio-Regular.ttf",
+    "assets/fonts/Gelasio-Italic.woff2",
+    "assets/fonts/Gelasio-Italic.ttf",
+    "assets/fonts/Gelasio-Bold.woff2",
+    "assets/fonts/Gelasio-Bold.ttf",
+    "assets/fonts/Gelasio-BoldItalic.woff2",
+    "assets/fonts/Gelasio-BoldItalic.ttf",
+    "assets/fonts/CourierPrime-Regular.woff2",
+    "assets/fonts/CourierPrime-Regular.ttf",
+    "assets/fonts/CourierPrime-Italic.woff2",
+    "assets/fonts/CourierPrime-Italic.ttf",
+    "assets/fonts/CourierPrime-Bold.woff2",
+    "assets/fonts/CourierPrime-Bold.ttf",
+    "assets/fonts/CourierPrime-BoldItalic.woff2",
+    "assets/fonts/CourierPrime-BoldItalic.ttf",
     "assets/fonts/OFL-Anton.txt",
     "assets/fonts/OFL-Gelasio.txt",
     "assets/fonts/OFL-Courier-Prime.txt",
@@ -135,72 +147,25 @@ def generate_homepage(
     )
 
     now = datetime.now(timezone.utc)
-    previous_events = [event for event in events if event.start_at <= now]
     upcoming_events = [event for event in events if event.start_at > now]
     upcoming_events.reverse()
+    next_event = upcoming_events[0] if upcoming_events else None
 
     current_year = datetime.now(config.EVENTS_TZ).year
-
-    def past_entry_ctx(entry: FeedEntry) -> dict[str, str | bool]:
-        """Build entry context with extra "N years ago" fields for on-this-day.
-
-        Args:
-            entry: Entry from a previous year.
-
-        Returns:
-            Entry context with years_ago and years_text keys added.
-        """
-        ctx = entry_ctx(entry)
-        years_ago = current_year - entry.published.year
-        ctx.update(
-            {
-                "years_ago": f"{years_ago}",
-                "years_text": (
-                    f"{years_ago} year" if years_ago == 1 else f"{years_ago} years"
-                ),
-            }
-        )
-        return ctx
-
-    # Prepare template data
-    shown_entries = group_feed_entries(other_entries)[: config.MAX_SHOWN_POSTS]
-    shown_weeknotes = group_feed_entries(weeknote_entries)[
-        : config.MAX_SHOWN_WEEK_NOTES
-    ]
-    shown_on_this_day = on_this_day_entries
-
-    all_shown = shown_entries + shown_weeknotes + shown_on_this_day
-    shown_links = {e.link for e in all_shown}
-
-    available_for_random = [e for e in all_entries if e.link not in shown_links]
-
-    feeds_seen: set[str] = set()
-    unique_feed_posts: list[FeedEntry] = []
-    random.shuffle(available_for_random)
-    for entry in available_for_random:
-        if entry.feed_home_url not in feeds_seen:
-            feeds_seen.add(entry.feed_home_url)
-            unique_feed_posts.append(entry)
-            if len(unique_feed_posts) >= config.MAX_SHOWN_RANDOM_POSTS:
-                break
-
-    random_posts = unique_feed_posts
+    sections = build_entry_sections(
+        all_entries,
+        weeknote_entries,
+        other_entries,
+        on_this_day_entries,
+        current_year,
+    )
 
     template_data = {
         "site_url": config.SITE_URL,
+        "latest_entries": sections.recent[: config.MAX_SHOWN_HOMEPAGE_POSTS],
+        "next_event": next_event,
+        "has_next_event": next_event is not None,
         "webcal_url": config.WEBCAL_URL,
-        "upcoming_events": upcoming_events,
-        "has_upcoming_events": len(upcoming_events) > 0,
-        "previous_events": previous_events[: config.MAX_SHOWN_EVENTS],
-        "entries": [entry_ctx(e) for e in shown_entries],
-        "week_notes": [entry_ctx(e) for e in shown_weeknotes],
-        "random_posts": [entry_ctx(e) for e in random_posts],
-        "has_random_posts": len(random_posts) > 0,
-        "on_this_day": [past_entry_ctx(e) for e in shown_on_this_day],
-        "has_on_this_day": len(shown_on_this_day) > 0,
-        "failed_feeds": failed_feeds,
-        "has_failed_feeds": len(failed_feeds) != 0,
-        "has_search": has_search,
     }
 
     index_template = read_template("index.html")
