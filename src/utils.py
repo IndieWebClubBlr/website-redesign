@@ -50,6 +50,86 @@ _NAV_SECTIONS = {
     "about": ("about/", "coc/"),
 }
 
+# Per-page titles and descriptions. Archive year pages are generated below.
+_PAGE_META = {
+    "": (
+        "IndieWebClub Bangalore",
+        "A friendly Bangalore meetup for people who make and own the web.",
+    ),
+    "events/": (
+        "Events · IndieWebClub Bangalore",
+        "Upcoming and past IndieWebClub Bangalore meetups at Underline Center, Indiranagar.",
+    ),
+    "writings/": (
+        "Writings · IndieWebClub Bangalore",
+        "Recent posts, weeknotes, and older favourites from IndieWebClub Bangalore members.",
+    ),
+    "members/": (
+        "Members · IndieWebClub Bangalore",
+        "People who blog, tinker, and share their work with IndieWebClub Bangalore.",
+    ),
+    "about/": (
+        "About · IndieWebClub Bangalore",
+        "What IndieWebClub Bangalore is, who it is for, and how to join.",
+    ),
+    "archive/": (
+        "Archive · IndieWebClub Bangalore",
+        "Every post from the IndieWebClub Bangalore blogroll, by year.",
+    ),
+    "search/": (
+        "Search · IndieWebClub Bangalore",
+        "Search every post from IndieWebClub Bangalore members.",
+    ),
+    "newsletter/": (
+        "Newsletter · IndieWebClub Bangalore",
+        "A short weekly email with the best member writing.",
+    ),
+    "webring/": (
+        "Webring · IndieWebClub Bangalore",
+        "Connect your website to the IndieWebClub Bangalore webring.",
+    ),
+    "topics/": (
+        "Topics · IndieWebClub Bangalore",
+        "Discussion topics and notes from IndieWebClub Bangalore meetups.",
+    ),
+    "prompts/": (
+        "Writing Prompts · IndieWebClub Bangalore",
+        "Writing prompts from IndieWebClub Bangalore meetups.",
+    ),
+    "coc/": (
+        "Code of Conduct · IndieWebClub Bangalore",
+        "The IndieWebClub Bangalore community code of conduct.",
+    ),
+}
+
+
+def page_meta(page_url: str) -> tuple[str, str]:
+    """Return the title and description for a generated page.
+
+    Args:
+        page_url: Relative page URL, with or without a leading slash.
+
+    Returns:
+        A ``(title, description)`` pair.
+    """
+    path = page_url.strip("/")
+    if not path:
+        return _PAGE_META[""]
+    key = f"{path}/"
+    if key in _PAGE_META:
+        return _PAGE_META[key]
+    if path.startswith("archive/") and len(path.split("/")) == 2:
+        year = path.split("/")[1]
+        return (
+            f"{year} archive · IndieWebClub Bangalore",
+            f"IndieWebClub Bangalore member posts from {year}.",
+        )
+    label = path.split("/")[0].replace("-", " ").title()
+    return (
+        f"{label} · IndieWebClub Bangalore",
+        "Website of the IndieWebClub Bangalore community.",
+    )
+
 
 def nav_section(page_url: str) -> str:
     """Return the top-level navigation section for a page URL.
@@ -237,9 +317,12 @@ def render_and_save_html(html_content: str, page_url: str, output_dir: Path):
     try:
         now = datetime.now(timezone.utc)
         section = nav_section(page_url)
+        page_title, page_description = page_meta(page_url)
         template_data = {
             "site_url": config.SITE_URL,
             "page_url": f"{config.SITE_URL}{page_url}",
+            "page_title": page_title,
+            "page_description": page_description,
             "generated_date": now.astimezone(config.EVENTS_TZ).strftime(
                 "%d %b %Y, %I:%M %p IST"
             ),
