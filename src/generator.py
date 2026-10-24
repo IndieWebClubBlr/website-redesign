@@ -182,6 +182,34 @@ def generate_homepage(
         raise
 
 
+def generate_events_page(events: list[Event], output_dir: Path) -> None:
+    """Generate the dedicated events page.
+
+    Args:
+        events: Events returned by the fetcher, sorted newest first.
+        output_dir: Site output directory.
+    """
+    now = datetime.now(timezone.utc)
+    previous_events = [event for event in events if event.start_at <= now]
+    upcoming_events = [event for event in events if event.start_at > now]
+    upcoming_events.reverse()
+
+    template_data = {
+        "site_url": config.SITE_URL,
+        "webcal_url": config.WEBCAL_URL,
+        "upcoming_events": upcoming_events,
+        "has_upcoming_events": len(upcoming_events) > 0,
+        "previous_events": previous_events,
+        "has_previous_events": len(previous_events) > 0,
+    }
+
+    template = read_template("events.html")
+    renderer = make_renderer()
+    render_and_save_html(
+        renderer.render(template, template_data), "events/", output_dir / "events"
+    )
+
+
 def get_feeds_with_entries(
     entries: list[FeedEntry],
     failed_feeds: list[FailedFeedInfo],
@@ -667,6 +695,12 @@ def generate_website(
             has_search=cache.search_page_built,
         )
 
+    @build.rule("events_page")
+    def _(_target: str):
+        """Generate the /events/ page."""
+        build.need("events")
+        generate_events_page(cache.events, output_dir)
+
     @build.rule("sitemap")
     def _(_target: str):
         """Generate sitemap.xml from every built index.html."""
@@ -678,6 +712,7 @@ def generate_website(
             "newsletter",
             "archive",
             "homepage",
+            "events_page",
             *page_targets,
         )
 
@@ -713,6 +748,7 @@ def generate_website(
             "newsletter",
             "archive",
             "homepage",
+            "events_page",
             "sitemap",
             *[f"asset:{asset}" for asset in ASSETS],
             *page_targets,
