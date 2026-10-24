@@ -210,6 +210,51 @@ def generate_events_page(events: list[Event], output_dir: Path) -> None:
     )
 
 
+def generate_writings_page(
+    all_entries: list[FeedEntry],
+    weeknote_entries: list[FeedEntry],
+    other_entries: list[FeedEntry],
+    on_this_day_entries: list[FeedEntry],
+    output_dir: Path,
+    has_search: bool = False,
+) -> None:
+    """Generate the dedicated member writings page.
+
+    Args:
+        all_entries: Every fetched entry.
+        weeknote_entries: Entries classified as weeknotes.
+        other_entries: Entries that are not weeknotes.
+        on_this_day_entries: Entries published on this day in earlier years.
+        output_dir: Site output directory.
+        has_search: Whether the search page is available.
+    """
+    sections = build_entry_sections(
+        all_entries,
+        weeknote_entries,
+        other_entries,
+        on_this_day_entries,
+        datetime.now(config.EVENTS_TZ).year,
+    )
+    template_data = {
+        "site_url": config.SITE_URL,
+        "entries": sections.recent,
+        "week_notes": sections.week_notes,
+        "random_posts": sections.random_posts,
+        "has_random_posts": sections.has_random_posts,
+        "on_this_day": sections.on_this_day,
+        "has_on_this_day": sections.has_on_this_day,
+        "has_search": has_search,
+    }
+
+    template = read_template("writings.html")
+    renderer = make_renderer()
+    render_and_save_html(
+        renderer.render(template, template_data),
+        "writings/",
+        output_dir / "writings",
+    )
+
+
 def get_feeds_with_entries(
     entries: list[FeedEntry],
     failed_feeds: list[FailedFeedInfo],
@@ -701,6 +746,19 @@ def generate_website(
         build.need("events")
         generate_events_page(cache.events, output_dir)
 
+    @build.rule("writings_page")
+    def _(_target: str):
+        """Generate the /writings/ page."""
+        build.need("feeds", "search_page")
+        generate_writings_page(
+            cache.entries,
+            cache.weeknote_entries,
+            cache.other_entries,
+            cache.on_this_day_entries,
+            output_dir,
+            has_search=cache.search_page_built,
+        )
+
     @build.rule("sitemap")
     def _(_target: str):
         """Generate sitemap.xml from every built index.html."""
@@ -713,6 +771,7 @@ def generate_website(
             "archive",
             "homepage",
             "events_page",
+            "writings_page",
             *page_targets,
         )
 
@@ -749,6 +808,7 @@ def generate_website(
             "archive",
             "homepage",
             "events_page",
+            "writings_page",
             "sitemap",
             *[f"asset:{asset}" for asset in ASSETS],
             *page_targets,

@@ -1,0 +1,84 @@
+<header class="page-intro">
+  <p class="eyebrow">Member writing</p>
+  <h1>Writings</h1>
+  <p class="lede">Recent posts, notes, and older favourites from members of IndieWebClub Bangalore.</p>
+</header>
+
+<nav class="utility-bar" aria-label="Writing feeds and indexes">
+  <ul>
+    <li><a href="/blogroll.atom">RSS (links)</a></li>
+    <li><a href="/blogroll-latest.atom">RSS (with content)</a></li>
+    <li><a href="/blogroll-weeknotes.atom">Weeknotes feed</a></li>
+    <li><a href="https://indiewebclubblr.github.io/blogroll-replay/feed.atom">Replay feed</a></li>
+    <li><a href="/blogroll.opml">OPML</a></li>
+    <li><a href="/archive/">Archive</a></li>
+    {{#has_search}}<li><a href="/search/">Search</a></li>{{/has_search}}
+    <li><a href="/newsletter/">Newsletter</a></li>
+    <li><a href="/members/">Members</a></li>
+  </ul>
+</nav>
+
+<section aria-labelledby="recent-posts">
+  <h2 id="recent-posts">Recent Posts by Members</h2>
+  <ol class="post-list">
+    {{#entries}}
+    <li>
+      <article class="entry h-entry" id="recent-{{entry_id}}">
+        <h3 class="p-name"><a class="u-url u-uid" href="{{link_utm}}" target="_blank">{{title}}</a></h3>
+        <p class="meta">by <a class="p-author h-card" href="{{feed_home_url_utm}}">{{feed_title}}</a> · <time class="dt-published" datetime="{{published_machine}}">{{published_human}}</time></p>
+        {{#summary}}<p class="p-summary">{{summary}}</p>{{/summary}}
+      </article>
+    </li>
+    {{/entries}}
+  </ol>
+</section>
+
+<section aria-labelledby="week-notes">
+  <h2 id="week-notes">Day/Week/Month Notes by Members</h2>
+  <ol class="post-list">
+    {{#week_notes}}
+    <li>
+      <article class="entry h-entry" id="weeknote-{{entry_id}}">
+        <h3 class="p-name"><a class="u-url u-uid" href="{{link_utm}}" target="_blank">{{title}}</a></h3>
+        <p class="meta">by <a class="p-author h-card" href="{{feed_home_url_utm}}">{{feed_title}}</a> · <time class="dt-published" datetime="{{published_machine}}">{{published_human}}</time></p>
+        {{#summary}}<p class="p-summary">{{summary}}</p>{{/summary}}
+      </article>
+    </li>
+    {{/week_notes}}
+  </ol>
+</section>
+
+{{#has_on_this_day}}
+<section aria-labelledby="on-this-day">
+  <h2 id="on-this-day">On This Day in Previous Years</h2>
+  <ol class="post-list">
+    {{#on_this_day}}
+    <li>
+      <article class="entry h-entry" id="on-this-day-{{entry_id}}">
+        <p class="year-badge">{{years_text}} ago</p>
+        <h3 class="p-name"><a class="u-url u-uid" href="{{link_utm}}" target="_blank">{{title}}</a></h3>
+        <p class="meta">by <a class="p-author h-card" href="{{feed_home_url_utm}}">{{feed_title}}</a> · <time class="dt-published" datetime="{{published_machine}}">{{published_human}}</time></p>
+        {{#summary}}<p class="p-summary">{{summary}}</p>{{/summary}}
+      </article>
+    </li>
+    {{/on_this_day}}
+  </ol>
+</section>
+{{/has_on_this_day}}
+
+{{#has_random_posts}}
+<section aria-labelledby="random-posts">
+  <h2 id="random-posts">Some Random Posts</h2>
+  <ol class="post-list">
+    {{#random_posts}}
+    <li>
+      <article class="entry h-entry" id="random-{{entry_id}}">
+        <h3 class="p-name"><a class="u-url u-uid" href="{{link_utm}}" target="_blank">{{title}}</a></h3>
+        <p class="meta">by <a class="p-author h-card" href="{{feed_home_url_utm}}">{{feed_title}}</a> · <time class="dt-published" datetime="{{published_machine}}">{{published_human}}</time></p>
+        {{#summary}}<p class="p-summary">{{summary}}</p>{{/summary}}
+      </article>
+    </li>
+    {{/random_posts}}
+  </ol>
+</section>
+{{/has_random_posts}}
