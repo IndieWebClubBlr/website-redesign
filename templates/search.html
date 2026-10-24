@@ -1,9 +1,13 @@
-<h1 id="search">Search</h1>
-<p>Full-text search over all member posts. You can also <a href="/archive/">browse the archive</a>.</p>
+<header class="page-intro">
+  <p class="eyebrow">Find a post</p>
+  <h1 id="search">Search</h1>
+  <p class="lede">Full-text search over all member posts. You can also <a href="/archive/">browse the archive</a>.</p>
+</header>
 
 <div id="search-page" data-wasm="/{{{wasm_file}}}" data-ref="{{ref}}">
   <noscript class="noscript"><p>Enable JavaScript to search posts.</p></noscript>
-  <input type="search" id="search-input" aria-label="Search posts" placeholder="Search posts&hellip;" autocomplete="off" spellcheck="false" autofocus />
+  <label for="search-input">Search posts</label>
+  <input type="search" id="search-input" placeholder="Search posts&hellip;" autocomplete="off" spellcheck="false" autofocus />
   <p id="search-status" class="search-status">Type at least 3 characters to search.</p>
   <div id="search-results"></div>
 </div>

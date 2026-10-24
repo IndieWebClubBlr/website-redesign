@@ -1,12 +1,16 @@
 <section id="newsletter">
-  <h1>Blogroll Newsletter</h1>
+  <header class="page-intro">
+    <p class="eyebrow">Weekly digest</p>
+    <h1>Newsletter</h1>
+    <p class="lede">A short email with the best member writing. No noise.</p>
+  </header>
   {{> nl-form.html }}
 </section>
 
 {{#has_archive}}
 <section id="archive">
   <h2>Past Issues</h2>
-  <ol>
+  <ol class="link-list">
     {{#archive}}
     <li><a href="{{url}}">{{date}}</a></li>
     {{/archive}}

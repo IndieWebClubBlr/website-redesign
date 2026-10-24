@@ -1,6 +1,9 @@
-<a class="feed-link" href="{{{site_url}}}topics.atom">Feed</a>
-<h1>Topics</h1>
+<header class="page-intro">
+  <p class="eyebrow"><a class="feed-link" href="{{{site_url}}}topics.atom">Feed</a></p>
+  <h1>Topics</h1>
+</header>
 
+<div class="prose">
 <div class="toc">
 <ul>
 {{#sections}}
@@ -14,3 +17,4 @@
 {{#title}}<p>{{title}}</p>{{/title}}
 {{{topic_html}}}
 {{/sections}}
+</div>
