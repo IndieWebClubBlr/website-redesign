@@ -299,7 +299,7 @@ def markdown_to_html(markdown_file: Path) -> str:
     """
     try:
         markdown_content = markdown_file.read_text(encoding="utf-8")
-        return markdown.markdown(
+        html = markdown.markdown(
             markdown_content,
             extensions=[
                 "fenced_code",
@@ -309,6 +309,7 @@ def markdown_to_html(markdown_file: Path) -> str:
                 TocExtension(toc_depth="2-3"),
             ],
         )
+        return f'<div class="prose">{html}</div>'
     except Exception as e:
         logger.error(f"Failed to convert markdown from {markdown_file}: {e}")
         raise
