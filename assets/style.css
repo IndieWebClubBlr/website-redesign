@@ -1,6 +1,6 @@
 /* ==========================================================================
    IndieWebClub Bangalore — riso zine
-   Tokens, base, shell, components. One stylesheet, no animation.
+   Tokens, base, shell, components. One stylesheet, no motion.
    ========================================================================== */
 
 @font-face {
@@ -749,30 +749,8 @@ main {
 }
 
 /* --------------------------------------------------------------------------
-   Old homepage sections — kept styled until the new homepage lands
+   Meta lists
    -------------------------------------------------------------------------- */
-
-#intro,
-#upcoming-events,
-#recent-posts,
-#week-notes,
-#on-this-day,
-#random-posts,
-#previous-events {
-  margin-block: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--ink);
-}
-
-.event {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--rule);
-}
-
-.description {
-  max-width: 68ch;
-}
 
 ul.no-marker {
   padding: 0;

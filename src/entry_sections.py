@@ -36,7 +36,9 @@ def _past_entry_ctx(entry: FeedEntry, current_year: int) -> dict[str, str | bool
     ctx.update(
         {
             "years_ago": f"{years_ago}",
-            "years_text": f"{years_ago} year" if years_ago == 1 else f"{years_ago} years",
+            "years_text": (
+                f"{years_ago} year" if years_ago == 1 else f"{years_ago} years"
+            ),
         }
     )
     return ctx
@@ -74,8 +76,7 @@ def build_entry_sections(
     shown_on_this_day = on_this_day_entries
 
     shown_links = {
-        entry.link
-        for entry in shown_entries + shown_weeknotes + shown_on_this_day
+        entry.link for entry in shown_entries + shown_weeknotes + shown_on_this_day
     }
     available_for_random = [e for e in all_entries if e.link not in shown_links]
 

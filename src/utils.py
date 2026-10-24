@@ -66,8 +66,7 @@ def nav_section(page_url: str) -> str:
         return "home"
     for section, prefixes in _NAV_SECTIONS.items():
         if any(
-            path == prefix.rstrip("/") or path.startswith(prefix)
-            for prefix in prefixes
+            path == prefix.rstrip("/") or path.startswith(prefix) for prefix in prefixes
         ):
             return section
     return "other"

@@ -15,6 +15,9 @@ as a fallback source for browsers that cannot load WOFF2.
 | `CourierPrime-Bold.woff2` | Courier Prime | 700 | normal | Courier New bold |
 | `CourierPrime-BoldItalic.woff2` | Courier Prime | 700 | italic | Courier New bold italic |
 
+Gelasio Medium and SemiBold (and their italics) are also kept here as
+source weights. The site does not load them.
+
 All three families are licensed under the SIL Open Font License. The
 matching licence texts are:
 
